@@ -8,7 +8,7 @@ namespace Penalties
     {
         private static List<Goalkeeper> listGoalies = new List<Goalkeeper>();
         private static Helper h = new Helper();
-        private static Validators v = new Validators();
+        private static Validator v = new Validator();
         static void Main(string[] args)
         {
             Console.WriteLine("\tHi, welcome to penalties game:\n");
