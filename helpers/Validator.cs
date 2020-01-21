@@ -26,5 +26,14 @@ namespace Helpers
             }
             return true;
         }
+
+        public bool ValidateStriker(string fname, string lname, int age, int compusure, int work_rate, int accuracy)
+        {
+            if ((ValidatePlayer(fname, lname, age, compusure, work_rate) && h.checkIntInBounds(accuracy, Constants.MIN_STRIKER_ACCURACY, Constants.MAX_STRIKER_ACCURACY)) == false)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

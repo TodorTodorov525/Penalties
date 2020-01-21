@@ -1,0 +1,66 @@
+[
+  {
+    "TeamName": "CSKA",
+    "Goalkeepers": [
+      {
+        "FirstName": "Todor",
+        "LastName": "Todorov",
+        "Age": 23,
+        "Compusure": 1,
+        "WorkRate": 10,
+        "GKskill": 50
+      },
+      {
+        "FirstName": "Petar",
+        "LastName": "Petrov",
+        "Age": 33,
+        "Compusure": 10,
+        "WorkRate": 11,
+        "GKskill": 52
+      }
+    ],
+    "Strikers": [
+      {
+        "FirstName": "Hristo",
+        "LastName": "Hristov",
+        "Age": 33,
+        "Compusure": 10,
+        "WorkRate": 11,
+        "Accuracy": 80
+      }
+    ]
+  },
+  {
+    "TeamName": "Levski",
+    "Goalkeepers": [
+      {
+        "FirstName": "Radko",
+        "LastName": "Radev",
+        "Age": 23,
+        "Compusure": 1,
+        "WorkRate": 10,
+        "GKskill": 50
+      },
+      {
+        "FirstName": "Mitko",
+        "LastName": "Mitev",
+        "Age": 33,
+        "Compusure": 10,
+        "WorkRate": 11,
+        "GKskill": 52
+      }
+    ],
+    "Strikers": [
+      {
+        "FirstName": "Zlatan",
+        "LastName": "Zlatev",
+        "Age": 33,
+        "Compusure": 10,
+        "WorkRate": 11,
+        "Accuracy": 80
+      }
+    ]
+  }
+
+]
+
