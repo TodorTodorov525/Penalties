@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using BaseClasses;
 using Helpers;
@@ -9,13 +10,20 @@ namespace Penalties
     {
         private static List<Goalkeeper> listGoalies = new List<Goalkeeper>();
         private static List<Striker> listStrikers = new List<Striker>();
-        private static readonly Helper h = new Helper();
+        private static List<Team> listTeamsChampionship = new List<Team>();
         private static readonly Validator v = new Validator();
-        private static Generator g = new Generator();
+        
         static void Main()
         {
-          
-            g.PopulatePlayersToTeams();
+            List<Goalkeeper> generated_goalkeepers = Generator.GenerateGoalkeepers(3);
+            var x = Helper.ConvertToEnumerableJson(generated_goalkeepers);
+           
+            Console.WriteLine(x);
+            List<Striker> generated_strikers = Generator.GenerateStrikers(3);
+            var y = Helper.ConvertToEnumerableJson(generated_strikers);
+            
+            Console.WriteLine(y);
+
             Console.WriteLine("Hi, welcome to penalties game:\n");
             MainMenuChoice();
         }
@@ -36,12 +44,12 @@ namespace Penalties
             {
                 case "1":
                     Console.WriteLine("Creating a goalie...\n");
-                    h.HowToCreateGoalkeeper();
+                    Helper.HowToCreateGoalkeeper();
                     CreateGoalieInteractive();
                     break;
                 case "2":
                     Console.WriteLine("Creating a striker...\n");
-                    h.HowToCreateStriker();
+                    Helper.HowToCreateStriker();
                     CreateStrikerInteractive();
                     break;
                 case "3":
@@ -90,14 +98,33 @@ namespace Penalties
                     }
                     int parsed_stnum = Int32.Parse(stnum);
 
-                    Generator g = new Generator();
-                    List<Goalkeeper> generated_goalkeepers = g.GenerateGoalkeepers(parsed_gknum);
-                    List<Striker> generated_strikers = g.GenerateStrikers(parsed_stnum);
+                   
+                    List<Goalkeeper> generated_goalkeepers = Generator.GenerateGoalkeepers(parsed_gknum);
+                    List<Striker> generated_strikers = Generator.GenerateStrikers(parsed_stnum);
                     listGoalies.AddRange(generated_goalkeepers);
                     listStrikers.AddRange(generated_strikers);
-                    Console.WriteLine("Players have been generated"); 
+                    Console.WriteLine("Players have been generated");
+                    Generator.SaveToJsonFreeAgents(listGoalies);
+                    Generator.SaveToJsonFreeAgents(listStrikers);
+                    Console.WriteLine("Players have been save to a JSON file");
                     break;
                 case "8":
+                    Console.WriteLine("Loading data from team file...");
+                    Console.WriteLine("Enter filename with data for import:");
+                    Console.WriteLine("Files:");
+                    string[] files = Directory.GetFiles(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + Constants.DATA_FOLDER_NAME);
+                    for(int i =0; i < files.Length; i++)
+                    {
+                        int index = files[i].LastIndexOf(Constants.DATA_FOLDER_NAME);
+                        if (index > 0)
+                            Console.WriteLine(files[i][index..]);
+                    }
+
+                    string fileForImport = Console.ReadLine();
+                    listTeamsChampionship = Generator.PopulatePlayersToTeams(fileForImport);
+                    Console.WriteLine("Data has been imported:");
+                    break;
+                case "9":
                     Console.WriteLine("Closing application...");
                     Environment.Exit(0);
                     break;

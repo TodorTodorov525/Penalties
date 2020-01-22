@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using BaseClasses;
+using Newtonsoft.Json;
 
 namespace BaseClasses
 {
-    public class Striker : Player
-    { 
+    public class Striker : Player, IPlayer
+    {
+        [JsonProperty("ShotAccuracy")]
         public int ShotAccuracy { get; set; }
 
         public Striker(string fname, string lname, int age, int compusure, int work_rate, int shotAccuracy) : base(fname, lname, age, compusure, work_rate)
@@ -22,7 +22,7 @@ namespace BaseClasses
             {
                 return null;
             }
-            var random = new Random();
+            Random random = new Random();
             int indexOfStriker = random.Next(ls.Count);
             return ls[indexOfStriker];
         }

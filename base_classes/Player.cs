@@ -41,8 +41,5 @@ namespace BaseClasses
         public int GetPlayerComposure() => this.Compusure;
 
         public int GetPlayerWorkRate() => this.WorkRate;
-
-
-
     }
 }

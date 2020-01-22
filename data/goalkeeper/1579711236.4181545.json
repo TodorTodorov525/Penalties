@@ -1,0 +1,26 @@
+[
+  {
+    "GKskill": 27,
+    "FirstName": "Yatzo",
+    "LastName": "Sotirov",
+    "Age": 29,
+    "Compusure": 1,
+    "WorkRate": 1
+  },
+  {
+    "GKskill": 38,
+    "FirstName": "Yatzo",
+    "LastName": "Sotirov",
+    "Age": 49,
+    "Compusure": 2,
+    "WorkRate": 2
+  },
+  {
+    "GKskill": 13,
+    "FirstName": "Yatzo",
+    "LastName": "Bachev",
+    "Age": 26,
+    "Compusure": 7,
+    "WorkRate": 9
+  }
+]

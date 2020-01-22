@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 
@@ -50,7 +48,7 @@ namespace BaseClasses
 
         public List<Striker> GetTeamStrikers() => this.TeamStrikers;
 
-        public List<Goalkeeper> getTeamGoalkeepers() => this.TeamGoalkeepers;
+        public List<Goalkeeper> GetTeamGoalkeepers() => this.TeamGoalkeepers;
 
     }
 }

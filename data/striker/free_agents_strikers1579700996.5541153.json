@@ -1,0 +1,26 @@
+[
+  {
+    "ShotAccuracy": 29,
+    "FirstName": "Bozhur",
+    "LastName": "Mihailov",
+    "Age": 26,
+    "Compusure": 12,
+    "WorkRate": 9
+  },
+  {
+    "ShotAccuracy": 86,
+    "FirstName": "Lubomir",
+    "LastName": "Zhelev",
+    "Age": 27,
+    "Compusure": 18,
+    "WorkRate": 10
+  },
+  {
+    "ShotAccuracy": 78,
+    "FirstName": "Lubomir",
+    "LastName": "Alexov",
+    "Age": 42,
+    "Compusure": 17,
+    "WorkRate": 7
+  }
+]
