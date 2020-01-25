@@ -1,11 +1,8 @@
-﻿using Helpers;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 
 namespace BaseClasses
 {
-    public abstract class Player
+    public abstract class Player : IPlayer
     {
         [JsonProperty("FirstName")]
         private string FirstName { get; set; }
@@ -23,13 +20,18 @@ namespace BaseClasses
         [JsonProperty("WorkRate")]
         private int WorkRate { get; set; }
 
-        public Player(string fname, string lname, int age, int compusure, int work_rate)
+        [JsonProperty("TeamName")]
+        public string TeamName { get; set; } = "None";
+
+        public Player(string fname, string lname, int age, int compusure, int work_rate, string team_name)
         {
             this.FirstName = fname;
             this.LastName = lname;
             this.Age = age;
             this.Compusure = compusure;
             this.WorkRate = work_rate;
+            if (team_name != "" )
+                this.TeamName = team_name;
         }
 
         public string GetPlayerFirstName() => this.FirstName;
@@ -41,5 +43,16 @@ namespace BaseClasses
         public int GetPlayerComposure() => this.Compusure;
 
         public int GetPlayerWorkRate() => this.WorkRate;
+
+        public string GetPlayerTeamName() => this.TeamName;
+
+        public void SetPlayerTeamName(string TeamName) => this.TeamName = TeamName;
+
+        public string Print()
+        {
+            return this.GetPlayerFirstName() + " " + this.GetPlayerLastName() + " " +
+                this.GetPlayerAge() + " " + this.GetPlayerComposure() + " " +
+                this.GetPlayerWorkRate() + " " + this.GetPlayerTeamName();
+        }
     }
 }

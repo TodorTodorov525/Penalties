@@ -6,10 +6,10 @@ namespace BaseClasses
 {
     public class Striker : Player, IPlayer
     {
-        [JsonProperty("ShotAccuracy")]
+        [JsonProperty("Accuracy")]
         private int ShotAccuracy { get; set; }
 
-        public Striker(string fname, string lname, int age, int compusure, int work_rate, int shotAccuracy) : base(fname, lname, age, compusure, work_rate)
+        public Striker(string fname, string lname, int age, int compusure, int work_rate, int shotAccuracy, string team_name) : base(fname, lname, age, compusure, work_rate, team_name)
         {
             ShotAccuracy = shotAccuracy;
         }
@@ -26,5 +26,11 @@ namespace BaseClasses
             int indexOfStriker = random.Next(ls.Count);
             return ls[indexOfStriker];
         }
+
+        public new string Print()
+        {
+            return base.Print()  + " " + this.GetStrikerAccuracy();
+        }
+
     }
 }

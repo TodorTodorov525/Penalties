@@ -15,15 +15,6 @@ namespace Penalties
 
         static void Main()
         {
-            //List<Goalkeeper> generated_goalkeepers = Generator.GenerateGoalkeepers(3);
-            //var x = Helper.ConvertToEnumerableJson(generated_goalkeepers);
-
-            //Console.WriteLine(x);
-            //List<Striker> generated_strikers = Generator.GenerateStrikers(3);
-            //var y = Helper.ConvertToEnumerableJson(generated_strikers);
-
-            //Console.WriteLine(y);
-
             Console.WriteLine("Hi, welcome to penalties game:\n");
             MainMenuChoice();
         }
@@ -54,13 +45,13 @@ namespace Penalties
                     break;
                 case "3":
                     Console.WriteLine("Listing goalies\n");
-                    Console.WriteLine("id\tFirst name\tLast name\tAge\tSkill");
+                    Console.WriteLine("id\tFirst name\tLast name\tAge\tSkill\tTeam name");
                     ListGoalies();
                     Console.WriteLine();
                     break;
                 case "4":
                     Console.WriteLine("Listing strikers\n");
-                    Console.WriteLine("id\tFirst name\tLast name\tAge\tAccuracy");
+                    Console.WriteLine("id\tFirst name\tLast name\tAge\tAccuracy\tTeam name");
                     ListStrikers();
                     Console.WriteLine();
                     break;
@@ -127,10 +118,17 @@ namespace Penalties
                         listGoalies.AddRange(team.GetTeamGoalkeepers());
                         listStrikers.AddRange(team.GetTeamStrikers());
                     }
-                    // listGoalies.Append();
                     Console.WriteLine("Data has been imported:");
                     break;
                 case "9":
+                    Console.WriteLine("Choose a goalkeeper to transfer...");
+                    TransferGoalkeeper();
+                    break;
+                case "10":
+                    Console.WriteLine("Choose a striker to transfer...");
+                    TransferStriker();
+                    break;
+                case "11":
                     Console.WriteLine("Closing application...");
                     Environment.Exit(0);
                     break;
@@ -173,7 +171,7 @@ namespace Penalties
                 Console.WriteLine("Unsuccesfull creation!\nAge, composure work rate and skill must be integers!\nReturning to main menu.\n");
                 return null;
             };
-            var newGoalkeeper = CreateGoalkeeper(fname: fname, lname: lname, age: Int16.Parse(age), compusure: Int16.Parse(composure), work_rate: Int16.Parse(workRate), skill: Int16.Parse(gk_skill));
+            var newGoalkeeper = CreateFreeGoalkeeper(fname: fname, lname: lname, age: Int16.Parse(age), compusure: Int16.Parse(composure), work_rate: Int16.Parse(workRate), skill: Int16.Parse(gk_skill));
             if (newGoalkeeper == null)
             {
                 Console.WriteLine("Goalkeeper not created!");
@@ -212,7 +210,7 @@ namespace Penalties
                 Console.WriteLine("Unsuccesfull creation!\nAge, composure, work rate and accuracy must be integers!\nReturning to main menu.\n");
                 return null;
             };
-            var newStriker = CreateStriker(fname: fname, lname: lname, age: Int16.Parse(age), compusure: Int16.Parse(composure), work_rate: Int16.Parse(workRate), accuracy: Int16.Parse(accuracy));
+            var newStriker = CreateFreeStriker(fname: fname, lname: lname, age: Int16.Parse(age), compusure: Int16.Parse(composure), work_rate: Int16.Parse(workRate), accuracy: Int16.Parse(accuracy));
             if (newStriker == null)
             {
                 Console.WriteLine("Striker not created!\n");
@@ -226,20 +224,20 @@ namespace Penalties
         }
 
 
-        public static Goalkeeper CreateGoalkeeper(string fname, string lname, int age, int compusure, int work_rate, int skill)
+        public static Goalkeeper CreateFreeGoalkeeper(string fname, string lname, int age, int compusure, int work_rate, int skill)
         {
             if (v.ValidateGoalkeeper(fname, lname, age, compusure, work_rate, skill))
             {
-                return new Goalkeeper(fname, lname, age, compusure, work_rate, skill);
+                return new Goalkeeper(fname, lname, age, compusure, work_rate, skill, "");
             }
             return null;
         }
 
-        public static Striker CreateStriker(string fname, string lname, int age, int compusure, int work_rate, int accuracy)
+        public static Striker CreateFreeStriker(string fname, string lname, int age, int compusure, int work_rate, int accuracy)
         {
             if (v.ValidateStriker(fname, lname, age, compusure, work_rate, accuracy))
             {
-                return new Striker(fname, lname, age, compusure, work_rate, accuracy);
+                return new Striker(fname, lname, age, compusure, work_rate, accuracy, "");
             }
             return null;
         }
@@ -249,7 +247,7 @@ namespace Penalties
             int i = 0;
             foreach (Goalkeeper gk in listGoalies)
             {
-                Console.WriteLine($"{++i}\t{gk.GetPlayerFirstName()}\t\t{gk.GetPlayerLastName()}\t\t{gk.GetPlayerAge()}\t{gk.GetGoalkeeperSkill()}");
+                Console.WriteLine($"{++i}\t{gk.GetPlayerFirstName()}\t\t{gk.GetPlayerLastName()}\t\t{gk.GetPlayerAge()}\t{gk.GetGoalkeeperSkill()}\t{gk.GetPlayerTeamName()}");
             }
         }
 
@@ -258,7 +256,7 @@ namespace Penalties
             int i = 0;
             foreach (Striker st in listStrikers)
             {
-                Console.WriteLine($"{++i}\t{st.GetPlayerFirstName()}\t\t{st.GetPlayerLastName()}\t\t{st.GetPlayerAge()}\t{st.GetStrikerAccuracy()}");
+                Console.WriteLine($"{++i}\t{st.GetPlayerFirstName()}\t\t{st.GetPlayerLastName()}\t\t{st.GetPlayerAge()}\t{st.GetStrikerAccuracy()}\t{st.GetPlayerTeamName()}");
             }
         }
 
@@ -307,5 +305,67 @@ namespace Penalties
             string GKDirection = GKJumpDirections[r.Next(GKJumpDirections.Length)];
             return Algorythms.CalculateShotIsGoal(shotDirection, GKDirection, gk, st);
         }
+
+
+        private static void TransferGoalkeeper()
+        {
+            List<Goalkeeper> AllGoalkeepers = new List<Goalkeeper>();
+            List<string> AllTeams = new List<string>() {"None"};
+            AllGoalkeepers.AddRange(listGoalies);
+            int i = 0;
+            string selectedNumber;
+            foreach (Goalkeeper gk in AllGoalkeepers)
+            {
+                i = i + 1;
+                Console.WriteLine( (i).ToString() + gk.Print());        
+            }
+
+            Console.Write("Please select a goalkeeper to transfer: ");
+            int inputedNumber = Helper.InputNumberFromConsole();
+            if (inputedNumber < 1 || inputedNumber > AllGoalkeepers.Count + 1)
+            {
+                Console.WriteLine("Not existing goalkeeper");
+                TransferGoalkeeper();
+            }
+            Goalkeeper SelectedGK = AllGoalkeepers.ElementAt(inputedNumber - 1);
+
+            Console.Write("Please select a team to transfer the goalkeeper into: ");
+            foreach(Team team in listTeamsChampionship)
+            {
+               AllTeams.Add(team.GetTeamName());
+            }
+             
+            for(int t =0; t < AllTeams.Count; t++)
+            {
+                Console.WriteLine((t + 1).ToString() + AllTeams.ElementAt(t));
+            }
+            int inputedTeamNumber = Helper.InputNumberFromConsole();
+            if (inputedTeamNumber < 1 || inputedTeamNumber > AllTeams.Count + 1)
+            {
+                Console.WriteLine("Not existing team");
+                TransferGoalkeeper();
+            }
+            else if (inputedTeamNumber == 1)
+            {
+                //free agent
+                SelectedGK.SetPlayerTeamName(AllTeams.ElementAt(0));
+            }
+            else
+            {
+                string SelectedTeam = AllTeams.ElementAt(inputedTeamNumber - 1);
+
+                IEnumerable<Team> SelectedTeamObject = listTeamsChampionship.Where(TeamName => TeamName.GetTeamName() == SelectedTeam);
+                SelectedTeamObject.First().GetTeamGoalkeepers().Add(SelectedGK);
+                SelectedGK.SetPlayerTeamName(SelectedTeam);
+            }
+            
+        }
+
+
+        private static void TransferStriker()
+        {
+
+        }
+
     }
 }

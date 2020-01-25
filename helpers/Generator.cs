@@ -22,7 +22,7 @@ namespace Helpers
                 var random = new Random();
                 int indexOfFirstName = random.Next(Constants.FIRST_NAMES.Length);
                 int indexOfLastName = random.Next(Constants.FIRST_NAMES.Length);
-                Goalkeeper newGoalkeeper = new Goalkeeper(Constants.FIRST_NAMES[indexOfFirstName], Constants.LAST_NAMES[indexOfLastName], random.Next(Constants.MIN_PLAYER_AGE, Constants.MAX_PLAYER_AGE), random.Next(Constants.MIN_PLAYER_COMPOSURE, Constants.MAX_PLAYER_COMPOSURE), random.Next(Constants.MIN_PLAYER_WORK_RATE, Constants.MAX_PLAYER_COMPOSURE), random.Next(Constants.MIN_GK_SKILL, Constants.MAX_GK_SKILL));
+                Goalkeeper newGoalkeeper = new Goalkeeper(Constants.FIRST_NAMES[indexOfFirstName], Constants.LAST_NAMES[indexOfLastName], random.Next(Constants.MIN_PLAYER_AGE, Constants.MAX_PLAYER_AGE), random.Next(Constants.MIN_PLAYER_COMPOSURE, Constants.MAX_PLAYER_COMPOSURE), random.Next(Constants.MIN_PLAYER_WORK_RATE, Constants.MAX_PLAYER_COMPOSURE), random.Next(Constants.MIN_GK_SKILL, Constants.MAX_GK_SKILL), "");
                 listGoalkeeper.Add(newGoalkeeper);
                 i++;
             }
@@ -38,7 +38,7 @@ namespace Helpers
                 var random = new Random();
                 int indexOfFirstName = random.Next(Constants.FIRST_NAMES.Length);
                 int indexOfLastName = random.Next(Constants.FIRST_NAMES.Length);
-                Striker newStriker = new Striker(Constants.FIRST_NAMES[indexOfFirstName], Constants.LAST_NAMES[indexOfLastName], random.Next(Constants.MIN_PLAYER_AGE, Constants.MAX_PLAYER_AGE), random.Next(Constants.MIN_PLAYER_COMPOSURE, Constants.MAX_PLAYER_COMPOSURE), random.Next(Constants.MIN_PLAYER_WORK_RATE, Constants.MAX_PLAYER_COMPOSURE), random.Next(Constants.MIN_STRIKER_ACCURACY, Constants.MAX_STRIKER_ACCURACY));
+                Striker newStriker = new Striker(Constants.FIRST_NAMES[indexOfFirstName], Constants.LAST_NAMES[indexOfLastName], random.Next(Constants.MIN_PLAYER_AGE, Constants.MAX_PLAYER_AGE), random.Next(Constants.MIN_PLAYER_COMPOSURE, Constants.MAX_PLAYER_COMPOSURE), random.Next(Constants.MIN_PLAYER_WORK_RATE, Constants.MAX_PLAYER_COMPOSURE), random.Next(Constants.MIN_STRIKER_ACCURACY, Constants.MAX_STRIKER_ACCURACY), "");
                 listStriker.Add(newStriker);
                 i++;
             }
@@ -48,15 +48,16 @@ namespace Helpers
 
         public static List<Team> PopulatePlayersToTeams(string fileForImport)
         {
-            List<Team> goalkeepers;
+            List<Team> ListWithPTeamsAndPlayers;
             string projectDir =  Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
 
             if (!File.Exists(projectDir + $"/data/{fileForImport}.json"))
                 return null;
 
             string free_agent_file = projectDir + $"/data/{fileForImport}.json";
-            goalkeepers = JsonConvert.DeserializeObject<List<Team>>(File.ReadAllText(free_agent_file));
-            return goalkeepers;
+            ListWithPTeamsAndPlayers = JsonConvert.DeserializeObject<List<Team>>(File.ReadAllText(free_agent_file));
+            AssignPlayersTeams(ListWithPTeamsAndPlayers);
+            return ListWithPTeamsAndPlayers;
         }
 
         public static void SaveToJsonFreeAgents<T>(IEnumerable<T> list) where T : IPlayer
@@ -76,6 +77,35 @@ namespace Helpers
            
             File.WriteAllText(newFile, Helper.ConvertToEnumerableJson(list));
         }
+
+        public static List<Team> AssignPlayersTeams(List<Team> ListWithPTeamsAndPlayers)
+        {
+            Validator v = new Validator();
+            foreach (Team team in ListWithPTeamsAndPlayers)
+            {
+                foreach (Goalkeeper gk in team.GetTeamGoalkeepers())
+                {
+                    if (v.ValidateGoalkeeper(gk.GetPlayerFirstName(), gk.GetPlayerLastName(),
+                        gk.GetPlayerAge(), gk.GetPlayerComposure(),
+                        gk.GetPlayerWorkRate(), gk.GetGoalkeeperSkill()))
+                        gk.SetPlayerTeamName(team.GetTeamName());
+                    else
+                        team.GetTeamGoalkeepers().Remove(gk);
+                }
+                foreach (Striker st in team.GetTeamStrikers())
+                {
+                    if (v.ValidateStriker(st.GetPlayerFirstName(), st.GetPlayerLastName(),
+                        st.GetPlayerAge(), st.GetPlayerComposure(),
+                        st.GetPlayerWorkRate(), st.GetStrikerAccuracy()))
+                        st.SetPlayerTeamName(team.GetTeamName());
+                    else
+                        team.GetTeamStrikers().Remove(st);
+                }
+            }
+            return ListWithPTeamsAndPlayers;
+        }
+
+        
     }
 }
 

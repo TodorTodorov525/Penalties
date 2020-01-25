@@ -2,5 +2,6 @@
 {
     interface IPlayer
     {
+        public abstract string Print();
     }
 }

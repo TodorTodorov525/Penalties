@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-
+using BaseClasses;
 namespace Helpers
 {
      class Helper
@@ -26,7 +26,7 @@ namespace Helpers
                 $"The striker's work rate must be between {Constants.MIN_PLAYER_WORK_RATE} and {Constants.MAX_PLAYER_WORK_RATE}.\nThe striker's accuracy must be between {Constants.MIN_STRIKER_ACCURACY} and {Constants.MAX_STRIKER_ACCURACY}.\n");
         }
 
-        public static string ConvertToEnumerableJson<T>(IEnumerable<T> arg) where T : BaseClasses.IPlayer
+        public static string ConvertToEnumerableJson<T>(IEnumerable<T> arg) where T : IPlayer
         {
             return  JsonConvert.SerializeObject(arg);
         }
@@ -36,6 +36,21 @@ namespace Helpers
             DateTime date1 = new DateTime(1970, 1, 1);
             TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - date1.Ticks);
             return Convert.ToString(ts.TotalSeconds);
+        }
+
+        public static int InputNumberFromConsole()
+        {
+            string input = Console.ReadLine();
+            try
+            {
+                Int32.Parse(input);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Invalid number!");
+                InputNumberFromConsole();
+            }
+            return Int32.Parse(input);
         }
     }
 }
