@@ -9,3 +9,10 @@ _ReSharper.*
 bin
 obj
 packages
+OBJ
+bin
+.*
+!.gitignore
+*.log
+bin/ 	# ignore bin directory
+*.obj 	# ignore any files with .obj postfix
