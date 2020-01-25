@@ -12,17 +12,17 @@ namespace Penalties
         private static List<Striker> listStrikers = new List<Striker>();
         private static List<Team> listTeamsChampionship = new List<Team>();
         private static readonly Validator v = new Validator();
-        
+
         static void Main()
         {
-            List<Goalkeeper> generated_goalkeepers = Generator.GenerateGoalkeepers(3);
-            var x = Helper.ConvertToEnumerableJson(generated_goalkeepers);
-           
-            Console.WriteLine(x);
-            List<Striker> generated_strikers = Generator.GenerateStrikers(3);
-            var y = Helper.ConvertToEnumerableJson(generated_strikers);
-            
-            Console.WriteLine(y);
+            //List<Goalkeeper> generated_goalkeepers = Generator.GenerateGoalkeepers(3);
+            //var x = Helper.ConvertToEnumerableJson(generated_goalkeepers);
+
+            //Console.WriteLine(x);
+            //List<Striker> generated_strikers = Generator.GenerateStrikers(3);
+            //var y = Helper.ConvertToEnumerableJson(generated_strikers);
+
+            //Console.WriteLine(y);
 
             Console.WriteLine("Hi, welcome to penalties game:\n");
             MainMenuChoice();
@@ -98,7 +98,7 @@ namespace Penalties
                     }
                     int parsed_stnum = Int32.Parse(stnum);
 
-                   
+
                     List<Goalkeeper> generated_goalkeepers = Generator.GenerateGoalkeepers(parsed_gknum);
                     List<Striker> generated_strikers = Generator.GenerateStrikers(parsed_stnum);
                     listGoalies.AddRange(generated_goalkeepers);
@@ -113,7 +113,7 @@ namespace Penalties
                     Console.WriteLine("Enter filename with data for import:");
                     Console.WriteLine("Files:");
                     string[] files = Directory.GetFiles(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + Constants.DATA_FOLDER_NAME);
-                    for(int i =0; i < files.Length; i++)
+                    for (int i = 0; i < files.Length; i++)
                     {
                         int index = files[i].LastIndexOf(Constants.DATA_FOLDER_NAME);
                         if (index > 0)
@@ -122,6 +122,12 @@ namespace Penalties
 
                     string fileForImport = Console.ReadLine();
                     listTeamsChampionship = Generator.PopulatePlayersToTeams(fileForImport);
+                    foreach (Team team in listTeamsChampionship)
+                    {
+                        listGoalies.AddRange(team.GetTeamGoalkeepers());
+                        listStrikers.AddRange(team.GetTeamStrikers());
+                    }
+                    // listGoalies.Append();
                     Console.WriteLine("Data has been imported:");
                     break;
                 case "9":
@@ -138,7 +144,7 @@ namespace Penalties
 
         private static void Match()
         {
-          
+
         }
 
         private static Goalkeeper CreateGoalieInteractive()
@@ -162,13 +168,13 @@ namespace Penalties
                 int parsedWorkRate = Int16.Parse(workRate);
                 int parsedSkill = Int16.Parse(gk_skill);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 Console.WriteLine("Unsuccesfull creation!\nAge, composure work rate and skill must be integers!\nReturning to main menu.\n");
                 return null;
             };
-            var newGoalkeeper = CreateGoalkeeper(fname: fname, lname: lname, age: Int16.Parse(age), compusure: Int16.Parse(composure), work_rate: Int16.Parse(workRate), skill: Int16.Parse(gk_skill)); 
-            if(newGoalkeeper == null)
+            var newGoalkeeper = CreateGoalkeeper(fname: fname, lname: lname, age: Int16.Parse(age), compusure: Int16.Parse(composure), work_rate: Int16.Parse(workRate), skill: Int16.Parse(gk_skill));
+            if (newGoalkeeper == null)
             {
                 Console.WriteLine("Goalkeeper not created!");
                 MainMenuChoice();
@@ -243,7 +249,7 @@ namespace Penalties
             int i = 0;
             foreach (Goalkeeper gk in listGoalies)
             {
-                Console.WriteLine($"{++i}\t{gk.GetPlayerFirstName()}\t{gk.GetPlayerLastName()}\t{gk.GetPlayerAge()}\t{gk.GetGoalkeeperSkill()}");
+                Console.WriteLine($"{++i}\t{gk.GetPlayerFirstName()}\t\t{gk.GetPlayerLastName()}\t\t{gk.GetPlayerAge()}\t{gk.GetGoalkeeperSkill()}");
             }
         }
 
@@ -252,13 +258,13 @@ namespace Penalties
             int i = 0;
             foreach (Striker st in listStrikers)
             {
-                Console.WriteLine($"{++i}\t{st.GetPlayerFirstName()}\t{st.GetPlayerLastName()}\t{st.GetPlayerAge()}\t{st.GetStrikerAccuracy()}");
+                Console.WriteLine($"{++i}\t{st.GetPlayerFirstName()}\t\t{st.GetPlayerLastName()}\t\t{st.GetPlayerAge()}\t{st.GetStrikerAccuracy()}");
             }
         }
 
         public static void PenaltyGame()
         {
-            Goalkeeper selectedGk = Goalkeeper.GetRandomGoalkeeper(listGoalies); 
+            Goalkeeper selectedGk = Goalkeeper.GetRandomGoalkeeper(listGoalies);
             Striker selectedStriker = Striker.GetRandomStriker(listStrikers);
             if (selectedGk == null)
             {
@@ -270,38 +276,36 @@ namespace Penalties
             }
             else
             {
-            Console.WriteLine($"The goalkeeper is {selectedGk.GetPlayerFirstName()} {selectedGk.GetPlayerLastName()} his skill is {selectedGk.GetGoalkeeperSkill()}");
-            Console.WriteLine($"The striker is{selectedStriker.GetPlayerFirstName()} {selectedStriker.GetPlayerLastName()} his accuracy is {selectedStriker.GetStrikerAccuracy()}");
-            Console.WriteLine("You are the striker!\nWhere do you want to shoot:\nL = Left\tC = Center\tR = Right");
-            string shotDirection = Console.ReadLine();
-            switch (shotDirection)
-            {
-                case "L":
-                    break;
-                case "C":
-                    break;
-                case "R":
-                    break;
-                default:
-                    Console.WriteLine("Unrecognised direction");
-                    PenaltyGame();
-                    return;  
-            }
-            if (ShotSavedScored(shotDirection, selectedGk, selectedStriker))
+                Console.WriteLine($"The goalkeeper is {selectedGk.GetPlayerFirstName()} {selectedGk.GetPlayerLastName()} his skill is {selectedGk.GetGoalkeeperSkill()}");
+                Console.WriteLine($"The striker is{selectedStriker.GetPlayerFirstName()} {selectedStriker.GetPlayerLastName()} his accuracy is {selectedStriker.GetStrikerAccuracy()}");
+                Console.WriteLine("You are the striker!\nWhere do you want to shoot:\nL = Left\tC = Center\tR = Right");
+                string shotDirection = Console.ReadLine();
+                switch (shotDirection)
+                {
+                    case "L":
+                        break;
+                    case "C":
+                        break;
+                    case "R":
+                        break;
+                    default:
+                        Console.WriteLine("Unrecognised direction");
+                        PenaltyGame();
+                        return;
+                }
+                if (ShotSavedScored(shotDirection, selectedGk, selectedStriker))
                     Console.WriteLine("GOAL!!!");
-            else
-                    Console.WriteLine("The shot has been saved!");
+                else
+                    Console.WriteLine("NO GOAL!!!");
             }
-            // CalculateGame(shotDirection);
         }
 
         private static bool ShotSavedScored(string shotDirection, Goalkeeper gk, Striker st)
         {
             Random r = new Random();
-            string[] GKJumpDirections = new string[] { "L", "C", "R"};
+            string[] GKJumpDirections = new string[] { "L", "C", "R" };
             string GKDirection = GKJumpDirections[r.Next(GKJumpDirections.Length)];
             return Algorythms.CalculateShotIsGoal(shotDirection, GKDirection, gk, st);
-          //  return (shotDirection == GKDirection) && (gk.GetGoalkeeperSkill() > st.GetStrikerAccuracy()) ? true : false;
         }
     }
 }
