@@ -272,7 +272,7 @@ namespace Penalties
             {
             Console.WriteLine($"The goalkeeper is {selectedGk.GetPlayerFirstName()} {selectedGk.GetPlayerLastName()} his skill is {selectedGk.GetGoalkeeperSkill()}");
             Console.WriteLine($"The striker is{selectedStriker.GetPlayerFirstName()} {selectedStriker.GetPlayerLastName()} his accuracy is {selectedStriker.GetStrikerAccuracy()}");
-            Console.WriteLine("You are the striker!\nWhere do you want to shoot:\nL = Left\tC = Center\tR =Right");
+            Console.WriteLine("You are the striker!\nWhere do you want to shoot:\nL = Left\tC = Center\tR = Right");
             string shotDirection = Console.ReadLine();
             switch (shotDirection)
             {
@@ -283,29 +283,25 @@ namespace Penalties
                 case "R":
                     break;
                 default:
-                    Console.WriteLine("Not good number");
+                    Console.WriteLine("Unrecognised direction");
                     PenaltyGame();
-                    break;
+                    return;  
             }
-           if(ShotSaved(shotDirection, selectedGk, selectedStriker) )
-            {
-                Console.WriteLine("The shot has been saved!");
-            }
+            if (ShotSavedScored(shotDirection, selectedGk, selectedStriker))
+                    Console.WriteLine("GOAL!!!");
             else
-            {
-                Console.WriteLine("GOAL!!!");
-            }
+                    Console.WriteLine("The shot has been saved!");
             }
             // CalculateGame(shotDirection);
         }
 
-        private static bool ShotSaved(string shotDirection, Goalkeeper gk, Striker st)
+        private static bool ShotSavedScored(string shotDirection, Goalkeeper gk, Striker st)
         {
             Random r = new Random();
-            string[] GKJump = new string[] { "L", "C", "R"};
-            string result = GKJump[r.Next(GKJump.Length)];
-
-            return (shotDirection == result) && (gk.GetGoalkeeperSkill() > st.GetStrikerAccuracy()) ? true : false;
+            string[] GKJumpDirections = new string[] { "L", "C", "R"};
+            string GKDirection = GKJumpDirections[r.Next(GKJumpDirections.Length)];
+            return Algorythms.CalculateShotIsGoal(shotDirection, GKDirection, gk, st);
+          //  return (shotDirection == GKDirection) && (gk.GetGoalkeeperSkill() > st.GetStrikerAccuracy()) ? true : false;
         }
     }
 }

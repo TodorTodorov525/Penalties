@@ -7,7 +7,7 @@ namespace BaseClasses
     public class Striker : Player, IPlayer
     {
         [JsonProperty("ShotAccuracy")]
-        public int ShotAccuracy { get; set; }
+        private int ShotAccuracy { get; set; }
 
         public Striker(string fname, string lname, int age, int compusure, int work_rate, int shotAccuracy) : base(fname, lname, age, compusure, work_rate)
         {

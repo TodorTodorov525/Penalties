@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\piach\\source\\repos\\github\\Penalties\\Penalties.csproj": {}
+    "C:\\Users\\piach\\source\\repos\\backup\\Penalties\\Penalties.csproj": {}
   },
   "projects": {
-    "C:\\Users\\piach\\source\\repos\\github\\Penalties\\Penalties.csproj": {
+    "C:\\Users\\piach\\source\\repos\\backup\\Penalties\\Penalties.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\piach\\source\\repos\\github\\Penalties\\Penalties.csproj",
+        "projectUniqueName": "C:\\Users\\piach\\source\\repos\\backup\\Penalties\\Penalties.csproj",
         "projectName": "Penalties",
-        "projectPath": "C:\\Users\\piach\\source\\repos\\github\\Penalties\\Penalties.csproj",
+        "projectPath": "C:\\Users\\piach\\source\\repos\\backup\\Penalties\\Penalties.csproj",
         "packagesPath": "C:\\Users\\piach\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\piach\\source\\repos\\github\\Penalties\\obj\\",
+        "outputPath": "C:\\Users\\piach\\source\\repos\\backup\\Penalties\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
