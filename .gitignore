@@ -10,3 +10,4 @@ OBJ
 *.log
 bin/ 
 *.obj 
+data
